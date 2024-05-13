@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController; // Agregado
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +24,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware'=>['auth']], function(){
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    //products
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('products', ProductController::class);
     Route::get('changestatusproduct', [ProductController::class, 'changestatusproduct'])->name('changestatusproduct');
+    Route::resource('customers', CustomerController::class);
+    Route::get('changestatuscustomer', [CustomerController::class, 'changestatuscustomer'])->name('changestatuscustomer');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index'); // Modificado
 });
 
 Route::get('/about', function () { 
@@ -52,9 +56,3 @@ Route::prefix('admin')->group(function () {
     return 'Lista de usuarios'; 
     }); 
     }); 
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -8,13 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    protected $table='orders';
-        protected $fillable = ['product_id', 'customer_id', 'date', 'price'];
-        protected $guarded = ['id', 'created_at', 'updated_at'];
-    public function customer(){
+
+    protected $table = 'orders';
+
+    protected $fillable = ['product_id', 'customer_id', 'date', 'price', 'dateorder', 'total', 'status', 'registerby', 'route'];
+    
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    public function customer()
+    {
         return $this->belongsTo(Customer::class);
     }
-    public function product(){
+
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 }

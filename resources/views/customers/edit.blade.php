@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Editar Producto')
+@section('title','Editar Cliente')
 
 @section('content')
 
@@ -18,7 +18,7 @@
                         <div class="card-header bg-secondary">
                             <h3>@yield('title')</h3>
                         </div>
-                        <form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('customers.update', $customer->id) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
@@ -26,26 +26,19 @@
                                     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                                         <div class="form-group label-floating">
                                             <label class="control-label">Nombre <strong style="color:red;">(*)</strong></label>
-                                            <input type="text" class="form-control" name="name" placeholder="Por ejemplo, Positiva" autocomplete="off" value="{{ $product->name }}">
+                                            <input type="text" class="form-control" name="name" placeholder="Por ejemplo, Juan" autocomplete="off" value="{{ $customer->name }}">
                                         </div>
                                         <div class="form-group label-floating">
-                                            <label class="control-label">Imagen <strong style="color:red;">(*)</strong></label>
-                                            @if ($product->image)
-                                                <center><p><img class="img-responsive img-thumbnail" src="{{ asset('uploads/products/'.$product->image) }}" style="height: 70px; width: 70px;" alt=""></p></center>
-                                            @endif
-                                            <input type="file" class="form-control" name="image" autocomplete="off">
+                                            <label class="control-label">Correo Electrónico <strong style="color:red;">(*)</strong></label>
+                                            <input type="email" class="form-control" name="email" placeholder="Por ejemplo, juan@example.com" autocomplete="off" value="{{ $customer->email }}">
                                         </div>
                                         <div class="form-group label-floating">
-                                            <label class="control-label">Descripción <strong style="color:red;">(*)</strong></label>
-                                            <input type="text" class="form-control" name="description" placeholder="Por ejemplo, Positiva" autocomplete="off" value="{{ $product->description }}">
+                                            <label class="control-label">Dirección <strong style="color:red;">(*)</strong></label>
+                                            <input type="text" class="form-control" name="address" placeholder="Por ejemplo, Av. Principal #123" autocomplete="off" value="{{ $customer->address }}">
                                         </div>
                                         <div class="form-group label-floating">
-                                            <label class="control-label">Cantidad <strong style="color:red;">(*)</strong></label>
-                                            <input type="number" class="form-control" name="quantity" autocomplete="off" value="{{ $product->quantity }}">
-                                        </div>
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Precio <strong style="color:red;">(*)</strong></label>
-                                            <input type="number" class="form-control" name="price" autocomplete="off" value="{{ $product->price }}">
+                                            <label class="control-label">Teléfono <strong style="color:red;">(*)</strong></label>
+                                            <input type="text" class="form-control" name="phone" placeholder="Por ejemplo, 123456789" autocomplete="off" value="{{ $customer->phone }}">
                                         </div>
                                     </div>
                                 </div>
@@ -57,7 +50,7 @@
                                         <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
                                     </div>
                                     <div class="col-lg-2 col-xs-4">
-                                        <a href="{{ route('products.index') }}" class="btn btn-danger btn-block btn-flat">Atras</a>
+                                        <a href="{{ route('customers.index') }}" class="btn btn-danger btn-block btn-flat">Atrás</a>
                                     </div>
                                 </div>
                             </div>

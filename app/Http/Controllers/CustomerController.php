@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Customer;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+
 
 class CustomerController extends Controller
 {
@@ -11,7 +17,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::all();
+        return view('customers.index', compact('customers'));
     }
 
     /**
@@ -19,7 +26,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('customers.create');
     }
 
     /**
@@ -27,7 +34,32 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $email = $request->email; // Agregar esta línea para definir la variable $email
+
+        if (!file_exists('uploads/customers')) {
+            mkdir('uploads/customers', 0777, true);
+        }
+        
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move('uploads/customers', $imagename);
+        } else {
+            $imagename = "";
+        }
+        
+        $customer = new Customer();
+        $customer->name = $request->name;
+        $customer->identification_document = $request->identification_document;
+        $customer->address = $request->address;
+        $customer->phone = $request->phone;
+        $customer->image = $imagename;
+        $customer->email = $email; // Asignar el valor de $email correctamente
+        $customer->status = 1;
+        $customer->registerby = $request->user()->id;
+        $customer->save();
+        
+        return redirect()->route('customers.index');
     }
 
     /**
@@ -41,24 +73,56 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Customer $customer)
     {
-        //
+        return view ('customers.edit', compact('customer'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    
+    public function update(Request $request, $id)
     {
-        //
+
+			$customer = Customer::find($id);
+			
+			$image = $request->file('image');
+			$slug = str::slug($request->name);
+			if (isset($image))
+			{
+				$currentDate = Carbon::now()->toDateString();
+				$imagename = $slug.'-'.$currentDate.'-'. uniqid() .'.'. $image->getClientOriginalExtension();
+
+				if (!file_exists('uploads/customers'))
+				{
+					mkdir('uploads/customers',0777,true);
+				}
+				$image->move('uploads/customers',$imagename);
+			}else{
+				$imagename = $customer->image;
+			}
+
+			$customer->name = $request -> name;
+			$customer->identification_document = $request->identification_document;
+			$customer->address = $request->address;
+			$customer->phone = $request->phone;
+			$customer->image = $imagename;
+            $customer->email = $email;
+            $customer->status = 1;
+            $customer->registerby = $request->user()->id;
+			$customer->save();
+
+            return redirect()->route('customers.index')->with('successMsg','El registro se actualizó exitosamente');
+    }
+    public function destroy(Customer $customer)
+    {
+        $customer->delete();
+       return redirect()->route('customers.index')->with('eliminar','ok');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function changestatuscustomer(Request $request)
+	{
+		$customer = Customer::find($request->customer_id);
+		$customer->status=$request->status;
+		$customer->save();
+	}
 }

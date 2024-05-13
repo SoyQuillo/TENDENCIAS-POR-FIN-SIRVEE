@@ -53,15 +53,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                            <<a href="{{ route('customers.index') }}" class="nav-link">
                             <i class="fa-solid fa-user nav-icon"></i>
                                 <p>Cliente</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/boxed.html" class="nav-link">
+                        <<a href="{{ route('orders.index') }}" class="nav-link">
                             <i class="fa-solid fa-file-circle-check nav-icon"></i>
-                                <p>Venta/Factura</p>
+                                <p>Order</p>
                             </a>
                         </li>
                         
@@ -120,6 +120,6 @@
         background-color: #007bff; /* Color de fondo */
         margin-left: auto; /* Margen izquierdo automático */
         margin-right: 20px; /* Margen derecho */
-        padding: 5px 10px; /* Espaciado */
+        padding: 5px 10px; 
     }
 </style>

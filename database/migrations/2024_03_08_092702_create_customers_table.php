@@ -15,8 +15,12 @@ return new class extends Migration
             $table->id();
             $table -> string ('name');
             $table -> string ('address') -> nullable();
-            $table -> string ('phone_number') -> nullable();
+            $table -> string ('phone') -> nullable();
             $table -> string ('email') -> nullable();
+            $table->string('status')->default('active');
+            $table->string('registerby')->nullable();
+            $table->string('identification_document')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

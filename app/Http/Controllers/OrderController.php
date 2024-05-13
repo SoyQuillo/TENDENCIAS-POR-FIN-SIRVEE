@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+
 
 class OrderController extends Controller
 {
@@ -11,54 +15,63 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders=Order::select('customers.name', 'customers.identification_document','orders.date','orders.price','orders.status')
+        ->join('customers','customer_id','=','orders.customer_id')->get();
+        return view('orders.index', compact('orders'));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $customers = Customer::where('status', '=', '1')->orderBy('name')->get();
+        $products = Product::where('status', '=', '1')->orderBy('name')->get();
+        $date = Carbon::now();
+        $date = $fecha-> format('Y-m-d');
+
+        return view('orders.create', compact('products', 'customers', 'date'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
-        //
+        DB::beginTransaction();
+
+        try{
+
+        }catch(Exception $e){
+            
+        }
+
+        $order = new Order();
+        $order->product_id = $request->product_id;
+        $order->customer_id = $request->customer_id; 
+        $order->date = now(); 
+        $order->total_amount = $request->total; 
+        $order->route = $request -> route;
+        $order->status = 1;
+        $order->registerby = $request->user()->id;
+        $order->save();
+
+        $idorder = $order -> id;
+
+        $detailorder = new Detailorder();
+
+        $detailorder -> order_id = $idorder;
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+       
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
+        
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+     
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+       
     }
 }
